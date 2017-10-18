@@ -9,6 +9,8 @@ import static java.awt.Color.*;
 import static picross.GameWindow.bSize;
 import static picross.GameWindow.clueLen;
 
+// This is spaghetti code
+
 @SuppressWarnings("WeakerAccess")
 class Grid {
 	public final int sizeX;
@@ -66,7 +68,7 @@ class Grid {
 				break;
 			case 3:
 				graphics2D.setColor(RED);
-				graphics2D.fillRect(clueLen[0] + x * bSize + cWidth, //draw red background
+				graphics2D.fillRect(clueLen[0] + x * bSize + cWidth, //draw red background, but how can the background be red if our eyes aren't red?
 						clueLen[1] + y * bSize,
 						bSize,
 						bSize);
