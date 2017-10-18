@@ -35,6 +35,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+// We have the best security, don't we folks?
+
 /**
  *
  * @author weston
