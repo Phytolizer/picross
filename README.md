@@ -11,3 +11,9 @@ TODO
 - [ ] Online repository for puzzles
 - [ ] Better looking graphics - better button highlighting, custom textures and animations
 - [ ] More efficient system for generating puzzles, the current system is not optimal
+
+<!--
+
+I'm looking forward to where this project is going.
+
+-->
