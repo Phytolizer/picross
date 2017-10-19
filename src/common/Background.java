@@ -11,7 +11,7 @@ public class Background {
 	private static Color initialColor = new Color(128, 128, 255);
 	private static Color destinationColor = RandomColorGenerator.getOpaqueColor();
 	private static Color currentColor = initialColor;
-	private static int colorIntervalMS = 30000;
+	private static int colorIntervalMS = 3000;
 	protected static Timer timer;
 
 	public static Color getCurrentColor() {
