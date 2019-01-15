@@ -231,169 +231,160 @@ public class GameWindow extends common.Graphics {
 		bgColor = Background.getCurrentColor();
 		updateSize();
 		int i;
-		switch (currWindow) {
-			case GAME:
-				if (playable) {
-					bGamba.setVisible(true);
-					bGamba.setPos(255, height - 35);
-				}
-				if (playable /*&& !competitiveMode*/) {
-					bPause.setVisible(true);
+		if (currWindow == GAME) {
+			if (playable /*&& !competitiveMode*/) {
+				bPause.setVisible(true);
 
-				} else {
-					bBegin.setPos(width / 2 - 100, height / 2 - 50);
-					bResume.setPos(width / 2 - 100, height / 2 + 7);
-					bMainMenu.setPos(width / 2 - 100, height / 2 + 7);
-					bMainMenu2.setPos(width / 2, height / 2 + 7);
-					bRegenPuzzle.setPos(width / 2, height / 2 + 7);
-					bCreator.setPos(width / 2 - 100, bCreator.getY());
-				}
-				//get size of each box for optimal display size, takes into account clueLen and mistakes box
-				bSize = getBoxSize();
-
-				frame.setMinimumSize(new Dimension(
-						245 + getStrLen("TIME: " + Main.timer.toString(false), 20f) + 25
-								> clueLen[0] + MIN_BSIZE * gameGrid.sizeX + 25
-								? 245 + getStrLen("TIME: " + Main.timer.toString(false), 20f) + 25
-								: clueLen[0] + MIN_BSIZE * gameGrid.sizeX + 25, clueLen[1] + MIN_BSIZE * gameGrid.sizeY + 50
-				));
-				//check for completeness
-				boolean temp = true;
-				for (i = 0; i < gameGrid.sizeX; i++) {
-					for (int j = 0; j < gameGrid.sizeY; j++) {
-						if (gameGrid.getBox(i, j).getState() != 1 && solutionGrid.getBox(i, j).getState() == 1) {
-							temp = false;
-						}
-					}
-				}
-				if (temp) {
-					status = "solved";
-					allButtons.setWindow(GAME_END);
-					playable = false;
-					if (Main.timer != null) {
-						Main.timer.pause();
-					}
-					if (!scoreSubmitted && competitiveMode) {
-						submitScore();
-					}
-				}
-				//maximum mistakes
-				if (numMistakes == 5) {
-					status = "failed";
-					allButtons.setWindow(GAME_END);
-					playable = false;
-					Main.timer.pause();
-				}
-				//maximum time
-				if (Main.timer.getHours() > 9) {
-					status = "failed";
-					playable = false;
-					Main.timer.pause();
-				}
-				if (status.equals("paused") && !Main.animator.isRunning()) {
-					Main.animator.begin();
-				} else if (!status.equals("paused") && Main.animator.isRunning()) {
-					Main.animator.reset();
-				}
-				if (controlMode == ControlMode.KEYBOARD) {
-					int mouseDiffX = Math.abs(mouseX - savedMouseX);
-					int mouseDiffY = Math.abs(mouseY - savedMouseY);
-					if (mouseDiffX > 10 || mouseDiffY > 10) {
-						controlMode = ControlMode.MOUSE;
-						System.out.println("Entering mouse control mode");
-					}
-				}
-				int promptDelay = 5;
-				if (showingPausePrompt && Main.promptTimer.getSeconds() >= promptDelay) {
-					showingPausePrompt = false;
-					Main.promptTimer.reset();
-				}
-				break;
-			case GAMEMODE:
-				gameChoiceButtons.setVisible(true);
-				if (competitiveMode) {
-					bLoadPuzzle.setVisible(false);
-				}
-				bRandomPuzzle.setPos(width / 2 - 100, bRandomPuzzle.getY());
-				bLoadPuzzle.setPos(width / 2 - 100, bLoadPuzzle.getY());
-				break;
-			case SIZE_PICKER:
-				frame.setMinimumSize(new Dimension(
-						getStrLen("SIZE PICKER", 50f) + bBack.getSize().width * 2 + 25,
-						100 + 50 + 10 + 50 + 60 + 250
-				));
-				int freeSpace = height - 100 - bStart.getSize().height - 150;
-				bXUp.setVisible(true);
-				bXUp.setPos(width / 2 - 200, freeSpace / 2 - 55 + 160);
-				bXDown.setVisible(true);
-				bXDown.setPos(bXUp.getX(), bXUp.getY() + 110);
-				bYUp.setVisible(true);
-				bYUp.setPos(width / 2 + 100, freeSpace / 2 - 55 + 160);
-				bYDown.setVisible(true);
-				bYDown.setPos(bYUp.getX(), bYUp.getY() + 110);
-				bBack.setVisible(true);
-				bStart.setVisible(true);
-				bStart.setPos(width / 2 - 50, height - 100);
-				if (sizeX > 25) {
-					sizeX = 25;
-				}
-				if (sizeX < 1) {
-					sizeX = 1;
-				}
-				if (competitiveMode && sizeX < 5) {
-					sizeX = 5;
-				}
-				if (sizeY > 25) {
-					sizeY = 25;
-				}
-				if (sizeY < 1) {
-					sizeY = 1;
-				}
-				if (competitiveMode && sizeY < 5) {
-					sizeY = 5;
-				}
-				break;
-			case MENU:
-				mainMenuButtons.setVisible(true);
-				if (f != null) {
-					frame.setMinimumSize(new Dimension(getStrLen("MAIN MENU", 50f) + 25, 550));
-				}
-				bNewPuzzle.setPos(width / 2 - 100, bNewPuzzle.getY());
-				bLeaderboard.setPos(width / 2 - 100, bLeaderboard.getY());
-				bQuitGame.setPos(width / 2 - 100, bQuitGame.getY());
-				bControlsMenu.setPos(width / 2 - 100, bControlsMenu.getY());
+			} else {
+				bBegin.setPos(width / 2 - 100, height / 2 - 50);
+				bResume.setPos(width / 2 - 100, height / 2 + 7);
+				bMainMenu.setPos(width / 2 - 100, height / 2 + 7);
+				bMainMenu2.setPos(width / 2, height / 2 + 7);
+				bRegenPuzzle.setPos(width / 2, height / 2 + 7);
 				bCreator.setPos(width / 2 - 100, bCreator.getY());
-				competitiveModeToggle.setPos(width - 35, height - 35);
-				if (competitiveMode != competitiveModeToggle.isChecked()) {
-					competitiveMode = competitiveModeToggle.isChecked();
-				}
-				break;
-			case OPTIONS:
-				bBack.setVisible(true);
-				break;
-			case CONTROLS:
-				i = 0;
-				for (Button b : controlsMenuButtons.toList()) {
-					if (b instanceof ControlsButton) {
-						b.setPos(100, 150 + (50 * i));
-						i++;
+			}
+			//get size of each box for optimal display size, takes into account clueLen and mistakes box
+			bSize = getBoxSize();
+
+			frame.setMinimumSize(new Dimension(
+					245 + getStrLen("TIME: " + timer.toString(false), 20f) + 25
+					> clueLen[0] + MIN_BSIZE * gameGrid.sizeX + 25
+							? 245 + getStrLen("TIME: " + timer.toString(false), 20f) + 25
+							: clueLen[0] + MIN_BSIZE * gameGrid.sizeX + 25,
+					clueLen[1] + MIN_BSIZE * gameGrid.sizeY + 50
+			));
+			//check for completeness
+			boolean temp = true;
+			for (i = 0; i < gameGrid.sizeX; i++) {
+				for (int j = 0; j < gameGrid.sizeY; j++) {
+					if (gameGrid.getBox(i, j).getState() != 1
+						&& solutionGrid.getBox(i, j).getState() == 1) {
+						temp = false;
 					}
 				}
-				bRestoreControls.setPos(width - 150 - 10, bRestoreControls.getY());
-				break;
-			case LOAD:
-				puzzleButtons.setVisible(false);
-				for (i = scrollIndex; i < scrollIndex + (puzzleButtons.size() >= 5 ? 5 : puzzleButtons.size()); i++) {
-					Button b = puzzleButtons.get(i);
-					b.setX(50);
-					int workingHeight = height - 150;
-					int topBuffer = 100;
-					b.setY(workingHeight * (i - scrollIndex) / 5 + topBuffer + 25);
-					b.setSizeX(width - 100);
-					b.setSizeY(workingHeight / 5 - 25);
-					b.setVisible(true);
+			}
+			if (temp) {
+				status = "solved";
+				allButtons.setWindow(GAME_END);
+				playable = false;
+				if (timer != null) {
+					timer.pause();
 				}
-				break;
+				if (!scoreSubmitted && competitiveMode) {
+					submitScore();
+				}
+			}
+			//maximum mistakes
+			if (numMistakes == 5) {
+				status = "failed";
+				allButtons.setWindow(GAME_END);
+				playable = false;
+				timer.pause();
+			}
+			//maximum time
+			if (timer.getHours() > 9) {
+				status = "failed";
+				playable = false;
+				timer.pause();
+			}
+			if (status.equals("paused") && !animator.isRunning()) {
+				animator.begin();
+			} else if (!status.equals("paused") && animator.isRunning()) {
+				animator.reset();
+			}
+			if (controlMode == ControlMode.KEYBOARD) {
+				int mouseDiffX = Math.abs(mouseX - savedMouseX);
+				int mouseDiffY = Math.abs(mouseY - savedMouseY);
+				if (mouseDiffX > 10 || mouseDiffY > 10) {
+					controlMode = ControlMode.MOUSE;
+					System.out.println("Entering mouse control mode");
+				}
+			}
+			int promptDelay = 5;
+			if (showingPausePrompt && promptTimer.getSeconds() >= promptDelay) {
+				showingPausePrompt = false;
+				promptTimer.reset();
+			}
+		} else if (currWindow == GAMEMODE) {
+			gameChoiceButtons.setVisible(true);
+			if (competitiveMode) {
+				bLoadPuzzle.setVisible(false);
+			}
+			bRandomPuzzle.setPos(width / 2 - 100, bRandomPuzzle.getY());
+			bLoadPuzzle.setPos(width / 2 - 100, bLoadPuzzle.getY());
+		} else if (currWindow == SIZE_PICKER) {
+			frame.setMinimumSize(new Dimension(
+					getStrLen("SIZE PICKER", 50f) + bBack.getSize().width * 2 + 25,
+					100 + 50 + 10 + 50 + 60 + 250
+			));
+			int freeSpace = height - 100 - bStart.getSize().height - 150;
+			bXUp.setVisible(true);
+			bXUp.setPos(width / 2 - 200, freeSpace / 2 - 55 + 160);
+			bXDown.setVisible(true);
+			bXDown.setPos(bXUp.getX(), bXUp.getY() + 110);
+			bYUp.setVisible(true);
+			bYUp.setPos(width / 2 + 100, freeSpace / 2 - 55 + 160);
+			bYDown.setVisible(true);
+			bYDown.setPos(bYUp.getX(), bYUp.getY() + 110);
+			bBack.setVisible(true);
+			bStart.setVisible(true);
+			bStart.setPos(width / 2 - 50, height - 100);
+			if (sizeX > 25) {
+				sizeX = 25;
+			}
+			if (sizeX < 1) {
+				sizeX = 1;
+			}
+			if (competitiveMode && sizeX < 5) {
+				sizeX = 5;
+			}
+			if (sizeY > 25) {
+				sizeY = 25;
+			}
+			if (sizeY < 1) {
+				sizeY = 1;
+			}
+			if (competitiveMode && sizeY < 5) {
+				sizeY = 5;
+			}
+		} else if (currWindow == MENU) {
+			mainMenuButtons.setVisible(true);
+			if (f != null) {
+				frame.setMinimumSize(new Dimension(getStrLen("MAIN MENU", 50f) + 25, 550));
+			}
+			bNewPuzzle.setPos(width / 2 - 100, bNewPuzzle.getY());
+			bLeaderboard.setPos(width / 2 - 100, bLeaderboard.getY());
+			bQuitGame.setPos(width / 2 - 100, bQuitGame.getY());
+			bControlsMenu.setPos(width / 2 - 100, bControlsMenu.getY());
+			bCreator.setPos(width / 2 - 100, bCreator.getY());
+			competitiveModeToggle.setPos(width - 35, height - 35);
+			if (competitiveMode != competitiveModeToggle.isChecked()) {
+				competitiveMode = competitiveModeToggle.isChecked();
+			}
+		} else if (currWindow == OPTIONS) {
+			bBack.setVisible(true);
+		} else if (currWindow == CONTROLS) {
+			i = 0;
+			for (Button b : controlsMenuButtons.toList()) {
+				if (b instanceof ControlsButton) {
+					b.setPos(100, 150 + (50 * i));
+					i++;
+				}
+			}
+			bRestoreControls.setPos(width - 150 - 10, bRestoreControls.getY());
+		} else if (currWindow == LOAD) {
+			puzzleButtons.setVisible(false);
+			for (i = scrollIndex;
+				 i < scrollIndex + (puzzleButtons.size() >= 5 ? 5 : puzzleButtons.size()); i++) {
+				Button b = puzzleButtons.get(i);
+				b.setX(50);
+				int workingHeight = height - 150;
+				int topBuffer     = 100;
+				b.setY(workingHeight * (i - scrollIndex) / 5 + topBuffer + 25);
+				b.setSizeX(width - 100);
+				b.setSizeY(workingHeight / 5 - 25);
+				b.setVisible(true);
+			}
 		}
 		if (!loginSuccessful) {
 			if (Main.lb.username != null) {
@@ -578,7 +569,6 @@ public class GameWindow extends common.Graphics {
 				}
 				if (!playable) {
 					bPause.setVisible(false);
-					bGamba.setVisible(false);
 					if (bBegin.isVisible()) {
 						faded = true;
 					}
@@ -890,7 +880,6 @@ public class GameWindow extends common.Graphics {
 		status = "get ready";
 		bBegin.setVisible(true);
 		bPause.setVisible(false);
-		bGamba.setVisible(false);
 		numMistakes = 0;
 		bRegenPuzzle.setVisible(false);
 		bMainMenu.setVisible(false);
@@ -968,8 +957,8 @@ public class GameWindow extends common.Graphics {
 	 *
 	 * @param b button to be compared with known buttons
 	 */
-	void doClickAction(Button b) throws Exception {
-		if (b != bXUp && b != bLeaderboard && b != bXDown && b != bYUp && b != bYDown && b != bBegin && b != bPause && b != bGamba && !(b instanceof ControlsButton)) {
+	void doClickAction(Button b) {
+		if (b != bXUp && b != bLeaderboard && b != bXDown && b != bYUp && b != bYDown && b != bBegin && b != bPause && !(b instanceof ControlsButton)) {
 			displayStatusNoBG("Loading...");
 		}
 		if (b == bNewPuzzle) {
@@ -1008,7 +997,6 @@ public class GameWindow extends common.Graphics {
 			bResume.setVisible(false);
 			bMainMenu2.setVisible(false);
 			bPause.setVisible(true);
-			bGamba.setVisible(false);
 			Main.timer.resume();
 			playable = true;
 			faded = false;
@@ -1017,7 +1005,6 @@ public class GameWindow extends common.Graphics {
 				allButtons.setWindow(PAUSE);
 				status = "paused";
 				bPause.setVisible(false);
-				bGamba.setVisible(false);
 				bResume.setVisible(true);
 				bMainMenu2.setVisible(true);
 				Main.timer.pause();
@@ -1032,48 +1019,6 @@ public class GameWindow extends common.Graphics {
 				} else {
 					showingPausePrompt = true;
 					Main.promptTimer.begin();
-				}
-			}
-		} else if (b == bGamba) {
-			if (status.equals("") && !Main.gambaTimer.isRunning()) {
-				int[] goodBad = findGoodBadSquaresRemaining();
-				int numGood = goodBad[0];
-				int numBad = goodBad[1];
-				if (numGood == 0 && numBad == 0) {//prevents infinite loop on the do-while statement below
-					//ABORT ABORT ABORT
-					return;
-				}
-				double rewardConstant = 3000;
-				double rewardProportion;//should be from 0.0 to 1.0
-				if (numGood > 0) {
-					rewardProportion = (double) numBad / (double) (numGood + numBad);
-				} else {
-					rewardProportion = 0;//overrides because there is no chance of a reward when there are no good tiles left
-				}
-//	        System.out.println("rewardProportion = " + rewardProportion);
-				Box randBox;
-				do {
-					int randX = (int) (Math.random() * sizeX);
-					int randY = (int) (Math.random() * sizeY);
-					randBox = gameGrid.getBox(randX, randY);
-				} while (randBox.getState() != Box.EMPTY);
-				if (randBox.green(solutionGrid)) {
-					int winTime = (int) (-1d * rewardConstant * rewardProportion);
-//                System.out.println("Awarded " + (-1 * winTime) + " milliseconds for a winning gamble");
-					if (timer.getMS() + winTime > 0) {
-						timer.addMS(winTime);
-					} else {
-						timer.addMS(timer.getMS() * (-1));
-					}
-				} else {
-					int loseTime = 10000;
-					numMistakes++;
-//                System.out.println("Punished for " + (loseTime + (numMistakes * 10000)) + " milliseconds due to a losing gamble");
-					timer.addMS(loseTime + numMistakes * 10000);
-					randBox.setCanModify(false);
-				}
-				if (competitiveMode) {
-					Main.gambaTimer.restart();
 				}
 			}
 		} else if (b == bXUp) {
@@ -1113,7 +1058,6 @@ public class GameWindow extends common.Graphics {
 			status = "get ready";
 			bBegin.setVisible(true);
 			bPause.setVisible(false);
-			bGamba.setVisible(false);
 			numMistakes = 0;
 			bRegenPuzzle.setVisible(false);
 			bMainMenu.setVisible(false);
@@ -1248,9 +1192,6 @@ public class GameWindow extends common.Graphics {
 							case "resolve2":
 								b.setText(KeyEvent.getKeyText(keyResolve2));
 								break;
-							case "gamba":
-								b.setText(KeyEvent.getKeyText(keyGamba));
-								break;
 						}
 					}
 				}
@@ -1383,8 +1324,7 @@ public class GameWindow extends common.Graphics {
 
 		gameButtons = new ButtonList(GAME);
 		bPause = new Button(20, 50, 60, 60, "Pause", YELLOW, 17, this);
-		bGamba = new Button(255, height - 35, 60, 25, "GAMBA", ORANGE, 17, this);
-		gameButtons.addButtons(new Button[]{bPause, bGamba});
+		gameButtons.addButton(bPause);
 
 		pauseMenuButtons = new ButtonList(PAUSE);
 		bResume = new Button(width / 2 - 100, height / 2 + 7, 100, 43, "Resume", GREEN, 17, this);
@@ -1412,7 +1352,7 @@ public class GameWindow extends common.Graphics {
 		controlsDescriptions = new ArrayList<>();
 		boolean newControls = false;
 		//catch-all for if prefs is not properly initialized
-		if (!(prefs.has("pauseGame") && prefs.has("up") && prefs.has("left") && prefs.has("down") && prefs.has("right") && prefs.has("resolve1") && prefs.has("resolve2") && prefs.has("gamba"))) {
+		if (!(prefs.has("pauseGame") && prefs.has("up") && prefs.has("left") && prefs.has("down") && prefs.has("right") && prefs.has("resolve1") && prefs.has("resolve2"))){
 			try {
 				newControls = true;
 				System.out.println("Prefs not initialized! Restoring default controls: ");
@@ -1463,12 +1403,6 @@ public class GameWindow extends common.Graphics {
 		if (!newControls) {
 			keyResolve2 = Integer.parseInt(prefs.get("resolve2"));
 		}
-		//Gamba is hotkey for gamba
-		controlsButtons.add(new ControlsButton(0, 0, buttonWidth, buttonHeight, KeyEvent.getKeyText(newControls ? keyGamba : Integer.parseInt(prefs.get("gamba"))), "gamba", 20, this));
-		controlsDescriptions.add("Hotkey to do the gamba");
-		if (!newControls) {
-			keyGamba = Integer.parseInt(prefs.get("gamba"));
-		}
 
 		controlsMenuButtons.addButtons(controlsButtons);
 	}
@@ -1482,7 +1416,6 @@ public class GameWindow extends common.Graphics {
 		prefs.put("right", Integer.toString(keyRight));
 		prefs.put("resolve1", Integer.toString(keyResolve1));
 		prefs.put("resolve2", Integer.toString(keyResolve2));
-		prefs.put("gamba", Integer.toString(keyGamba));
 		try {
 			prefs.close();
 		} catch (IOException e) {
