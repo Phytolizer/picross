@@ -2,6 +2,7 @@ package picross;
 
 import common.Background;
 import common.DrawingTools;
+import mygl.ExtendedFrame;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -22,7 +23,7 @@ import static java.awt.Color.*;
 import static picross.Main.*;
 import static picross.PicrossWindow.*;
 
-public class GameWindow extends common.Graphics {
+public class GameWindow extends mygl.Graphics {
 
 	private static final String VERSION = "1.5.1";
 	static int bSize;
@@ -122,7 +123,7 @@ public class GameWindow extends common.Graphics {
 	//endregion
 
 	public GameWindow() {
-		super("Loading...");
+	    super(new ExtendedFrame("Loading..."));
 		if (Math.random() < 0.05) {
 			gameName = "Pillsbury";
 		}
@@ -130,10 +131,10 @@ public class GameWindow extends common.Graphics {
 		//initialize frame & basic flags
 		frame.setSize(800, 600);
 		PicrossKeyHandler keyHandler = new PicrossKeyHandler();
-		frame.setKeyHandler(keyHandler);
+		frame.setKeyListener(keyHandler);
 		//basic window flags
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("resources/icon.png"));
-		setVisible(true);
+		frame.setVisible(true);
 		//important flags to determine what is displayed on screen
 		playable = false;
 		status = "menu";
