@@ -23,13 +23,4 @@ public class Coordinate {
         }
         return new Coordinate(coordX, coordY);
     }
-    
-    public static int convertToScreenCoordinates(int coord, int size, Alignment alignment) {
-        if (alignment == CENTER) {
-            coord -= size / 2;
-        } else if(alignment == RIGHT || alignment == BOTTOM) {
-            coord -= size;
-        }
-        return coord;
-    }
 }

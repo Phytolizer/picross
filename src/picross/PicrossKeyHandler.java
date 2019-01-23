@@ -3,14 +3,13 @@ package picross;
 import common.KeyInterface;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import static picross.Main.mainWindow;
 
 /**
  * Created by kyle on 3/3/17.
  */
-public class PicrossKeyHandler implements KeyListener {
+public class PicrossKeyHandler implements KeyInterface {
 	private String keyAssigning;
 	private final int keyCancelAssignment = KeyEvent.VK_BACK_SPACE;
 
@@ -19,7 +18,7 @@ public class PicrossKeyHandler implements KeyListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void pressKey(KeyEvent e) {
 		char keyChar = e.getKeyChar();
 		int keyCode = e.getKeyCode();
 		if (keyAssigning == null) {
@@ -106,7 +105,7 @@ public class PicrossKeyHandler implements KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void releaseKey(KeyEvent e) {
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_SHIFT) {
 			mainWindow.modifier = false;
@@ -115,11 +114,6 @@ public class PicrossKeyHandler implements KeyListener {
 		} else if (key == KeyEvent.VK_ENTER || key == KeyEvent.VK_SPACE) {
 			mainWindow.pushingSolveKey = false;
 		}
-	}
-	
-	@Override
-	public void keyTyped(KeyEvent e) {
-	
 	}
 
 	public void setKeyAssigning(String keyAssigning) {

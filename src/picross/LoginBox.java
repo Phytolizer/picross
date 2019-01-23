@@ -21,7 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -137,13 +136,13 @@ public class LoginBox extends JFrame implements ActionListener {
     public static String md5(String input) {
         try {
             java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(input.getBytes(StandardCharsets.UTF_8));
+            byte[] array = md.digest(input.getBytes("UTF-8"));
             StringBuffer sb = new StringBuffer();
-            for (byte b : array) {
-                sb.append(String.format("%02x", b));
+            for (int i = 0; i < array.length; i++) {
+                sb.append(String.format("%02x", array[i]));
             }
             return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             return null;
         }
 

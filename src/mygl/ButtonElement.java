@@ -80,11 +80,4 @@ public class ButtonElement extends Element {
         this.clickHandler = clickHandler;
     }
     
-    public void setBackgroundColor(Color backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-    
-    public void setText(String text) {
-        this.text = text;
-    }
 }
