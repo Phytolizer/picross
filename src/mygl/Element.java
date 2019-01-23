@@ -22,14 +22,31 @@ public class Element {
         AllElements.add(this);
     }
     
-    protected void move(int screenX, int screenY) {
-        move(screenX, screenY, Alignment.LEFT, Alignment.TOP);
+    public void move(int screenX, int screenY) {
+        this.screenX = screenX;
+        this.screenY = screenY;
     }
     
     public void move(int alignedX, int alignedY, Alignment horizontalAlignment, Alignment verticalAlignment) {
         Coordinate screenCoords = Coordinate.convertToScreenCoordinates(alignedX, alignedY, sizeX, sizeY, horizontalAlignment, verticalAlignment);
         screenX = screenCoords.x;
         screenY = screenCoords.y;
+    }
+    
+    public void moveX(int screenX) {
+        this.screenX = screenX;
+    }
+    
+    public void moveX(int alignedX, Alignment alignment) {
+        this.screenX = Coordinate.convertToScreenCoordinates(alignedX, sizeX, alignment);
+    }
+    
+    public void moveY(int screenY) {
+        this.screenY = screenY;
+    }
+    
+    public void moveY(int alignedY, Alignment alignment) {
+        this.screenY = Coordinate.convertToScreenCoordinates(alignedY, sizeY, alignment);
     }
     
     public void resize(int sizeX, int sizeY) {

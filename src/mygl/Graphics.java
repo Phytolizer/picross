@@ -64,7 +64,10 @@ public class Graphics implements Runnable, WindowListener, WindowFocusListener {
     
     @Override
     public void windowClosing(WindowEvent windowEvent) {
-    
+        frame.setVisible(false);
+        running = false;
+        frame.dispose();
+        done = true;
     }
     
     @Override
@@ -98,6 +101,7 @@ public class Graphics implements Runnable, WindowListener, WindowFocusListener {
         while (running) {
             updateSizeVariables();
             handleMouse();
+            update();
             AllElements.update();
             setupDraw();
             draw();
@@ -109,6 +113,13 @@ public class Graphics implements Runnable, WindowListener, WindowFocusListener {
                 e.printStackTrace();
             }
         }
+    }
+    
+    /**
+     * Method with general things to be done on each frame of a running application, that have nothing to do with drawing.
+     */
+    protected void update() {
+        // To be implemented in subclass
     }
     
     private void handleMouse() {
